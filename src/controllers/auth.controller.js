@@ -53,11 +53,17 @@ let login = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
 
+    const role = user.role;
+
     return res.json({
       message: "Login success",
+      redirectUrl: role === "admin"
+        ? "/admin/profile"
+        : "/user/profile",
       user: {
         id: user.id,
-        username: user.username
+        username: user.username,
+        role
       }
     });
 
