@@ -10,11 +10,11 @@ const { generateAccessToken, generateRefreshToken } = require("../utils/jwt");
 ========================= */
 let login = async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
     // 1. Tìm user
     const user = await User.findOne({
-      where: { username }
+      where: { email }
     });
 
     if (!user) {
@@ -57,14 +57,7 @@ let login = async (req, res) => {
 
     return res.json({
       message: "Login success",
-      redirectUrl: role === "admin"
-        ? "/admin/profile"
-        : "/user/profile",
-      user: {
-        id: user.id,
-        username: user.username,
-        role
-      }
+      token: accessToken
     });
 
   } catch (error) {

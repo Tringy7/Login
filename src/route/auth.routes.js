@@ -1,7 +1,10 @@
 import express from "express";
 import authController from "../controllers/auth.controller.js";
-import { authorize, verifyToken } from "../middleware/auth.middleware.js";
+import { validate, authorize, verifyToken } from "../middleware/auth.middleware.js";
 import rateLimit from "express-rate-limit";
+const {
+  loginValidationRules
+} = require("../validations/auth.validation");
 const router = express.Router();
 
 const loginLimiter = rateLimit({
@@ -10,8 +13,13 @@ const loginLimiter = rateLimit({
   message: "Too many login attempts"
 });
 
-router.post("/login", loginLimiter, authController.login);
-router.post("/refresh", authController.refresh);
+router.post(
+  "/login",
+  loginLimiter,
+  loginValidationRules,
+  validate,
+  authController.login
+);router.post("/refresh", authController.refresh);
 router.post("/logout", authController.logout);
 
 router.get(

@@ -9,10 +9,13 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      username: {
+      email: {
         type: Sequelize.STRING
       },
       password: {
+        type: Sequelize.STRING
+      },
+      role: {
         type: Sequelize.STRING
       },
       refreshToken: {
@@ -34,9 +37,6 @@ module.exports = {
         type: Sequelize.BOOLEAN
       },
       image: {
-        type: Sequelize.STRING
-      },
-      roleId: {
         type: Sequelize.STRING
       },
       positionId: {

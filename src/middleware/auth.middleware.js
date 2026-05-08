@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { validationResult } from "express-validator";
 
 export const verifyToken = (req, res, next) => {
   const token = req.cookies.accessToken;
@@ -18,4 +19,18 @@ export const authorize = (...roles) => {
     }
     next();
   };
+};
+
+
+export const validate = (req, res, next) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      success: false,
+      errors: errors.array(),
+    });
+  }
+
+  next();
 };
