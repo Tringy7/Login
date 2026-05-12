@@ -1,10 +1,8 @@
 import express from "express";
 import authController from "../controllers/auth.controller.js";
 import { validate, authorize, verifyToken } from "../middleware/auth.middleware.js";
+import { loginValidationRules } from "../validations/auth.validation.js";
 import rateLimit from "express-rate-limit";
-const {
-  loginValidationRules
-} = require("../validations/auth.validation");
 const router = express.Router();
 
 const loginLimiter = rateLimit({
@@ -19,8 +17,17 @@ router.post(
   loginValidationRules,
   validate,
   authController.login
-);router.post("/api/auth/refresh", authController.refresh);
+);
+router.post("/api/auth/refresh", authController.refresh);
 router.post("/api/auth/logout", authController.logout);
+
+router.get(
+  "/api/auth/profile",
+  verifyToken,
+  (req, res) => {
+    res.json({ user: req.user });
+  }
+);
 
 router.get(
   "/user/profile",

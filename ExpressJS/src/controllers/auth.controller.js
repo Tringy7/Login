@@ -43,13 +43,15 @@ let login = async (req, res) => {
     // 5. Set cookie
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
-      sameSite: "strict",
+      sameSite: "none",
+      secure: false,
       maxAge: 15 * 60 * 1000 // 15 phút
     });
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      sameSite: "strict",
+      sameSite: "none",
+      secure: false,
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
 
