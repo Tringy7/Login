@@ -2,7 +2,10 @@ import jwt from "jsonwebtoken";
 import { validationResult } from "express-validator";
 
 export const verifyToken = (req, res, next) => {
-  const token = req.cookies.accessToken;
+  const authHeader = req.headers.authorization;
+  const tokenFromHeader = authHeader && authHeader.startsWith("Bearer ") ? authHeader.slice(7) : null;
+  const token = req.cookies?.accessToken || tokenFromHeader;
+
   if (!token) return res.sendStatus(401);
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
